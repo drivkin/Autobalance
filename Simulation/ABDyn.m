@@ -6,14 +6,14 @@ q = r(1:4)';
 w = r(5:7);
 
 %moment of inertia
-I = diag([.1 .1 .2]);
+I = diag([.1 .2 .3]);
 invI = inv(I);
 % total mass of system
 m = 10;
 
 % displacement vector of center of mass from center of rotation in body
 % coordinates
-com = [0.02;
+com = [0.03;
        0.01;
         -.01];
     

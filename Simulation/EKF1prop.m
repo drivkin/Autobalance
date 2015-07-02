@@ -5,7 +5,7 @@ global globAsym
 global globDvec
 global globM
 global rcA
-persistent A
+global A
 %process covariance matrix
 Q = diag([0 0 0 0 0 0 0 0 0 100 100 100]);
 m = 10;

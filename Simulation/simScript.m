@@ -1,46 +1,48 @@
-% This script runs the simulation of an air bearing where the center of
-% rotation might not be coincident with the center of mass. Other torque
-% sources are ignored. Essentially a 3D pendulum. 
-
-%attitude is expressed using quaternions
-
-%initial condition is just a quaternion expressing the initial orientation
-%of the satellite body wrt the inertial frame
-
+%generate data with sample time T using ode45 solver
 clear all
-qInit = angle2quat(0,pi/10,0);
-wInit = [0 0 0];
-
 t0 = 0;
 tf = 10;
+T = .01;
 
-[t,rSim] = ode45(@ABDyn,[t0 tf],[qInit wInit]);
+N = ceil((tf-t0)/T); %number of points
+r = zeros(7,N);
 
-q = rSim(:,1:4);
-w = rSim(:,5:7);
+q0 = angle2quat(.01,.02,.03); %initial orientation
+w0 = [0;0;0]; %initial velocity
 
+r(:,1) = [q0';w0];
+
+tcurr = t0;
+t = t0;
+for i=2:N
+   [tsim rsim] = ode45(@ABDyn,[tcurr tcurr+T],r(:,i-1));
+   rsim = rsim';
+   r(:,i) = rsim(:,end);
+   tcurr = tcurr+T;
+   t = [t tcurr];
+end
+
+q = r(1:4,:);
+w = r(5:7,:);
+%%
 close all
 figure
-plot(t,w(:,1));
-hold all
-plot(t,w(:,2));
-plot(t,w(:,3));
-title('omega');
+plotVector(t,q,'quat');
 
 figure
-plot(t,q(:,1));
-hold all
-plot(t,q(:,2));
-plot(t,q(:,3));
-plot(t,q(:,4));
-title('q');
+plotVector(t,w,'omega');
 
-%%
-gb = [0; 0; -9.8];
-for i = 1:size(q,1)
-    gsim(:,i) = quat2dcm(q(i,:))*gb;
+%% 
+%compute gravity vector
+gInert = [0 0 -9.8]';
+for i =1:N
+    gBody(:,i) = quat2dcm(q(:,i)')*gInert;
 end
-wsim = w';
-tsim = t;
+%%
+%add measurement noise
+% gBody = gBody + 1*randn(size(gBody));
+% w = w+1*randn(size(w));
 
-save('simData','gsim','wsim','tsim');
+save('simData','t','gBody','w');
+
+
