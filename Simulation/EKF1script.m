@@ -10,6 +10,9 @@ EKFsymbolic;
 
 %load data
 load('simData');
+gsim = gBody;
+wsim = w;
+tsim = t;
 
 %state is [I11;I22;I33;w;cg;g] where the first three are the diagonal terms
 %of the MOI matrix, w is the angular momentum expressed in the body frame,
@@ -26,7 +29,7 @@ load('simData');
 
 %guess for g is [0; 0; -9.8]. This is reasonable because it should be
 %pretty close to horizontal
-xinit = [.1;
+xinit = [.11;
         .1;
         .1;
        wsim(:,1);
@@ -58,7 +61,7 @@ H = [0 0 0 1 0 0 0 0 0 0 0 0;
     0 0 0 0 0 0 0 0 0 0 0 1];
 
 %Measurement covariance matrix
-R = diag([.001 .001 .001 .001 .001 .001]);
+R = diag([.01 .01 .01 .01 .01 .01]);
 % R = zeros(6);
 
 
