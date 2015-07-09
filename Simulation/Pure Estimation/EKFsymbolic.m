@@ -1,4 +1,4 @@
-clear all
+
 %for now, assume MOI is diagonal
 I = diag(sym('I',[1 3]));
 
