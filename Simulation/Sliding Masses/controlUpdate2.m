@@ -1,4 +1,4 @@
-function [ rc ] = controlUpdate2(r, xhat)
+function [ rc ] = controlUpdate2(t,r, xhat)
 %This function implements proportional control using an estimate of the CoM
 %position.
 
@@ -33,12 +33,18 @@ cm = computeTotalCoM(M,m,xhat(28:30),xhat(4:12));
 integral = integral+T*cm;
 
 kp = 10;
-ki = 5;
+ki = 0;
 
 control = -kp*cm - ki*integral;
 
 
-%control(3) = 0; %lets try just balancing x and y first
+ control(1) = 0;
+ control(2) = 0;
+ control(3) = 0; %lets try just balancing x and y first
+
+% control(1) = sin(5*t);
+% control(2) = sin(5*t);
+% control(3) = sin(5*t); %lets try just balancing x and y first
 
 rc = r;
 

@@ -62,11 +62,11 @@ term1 = -cross(-w,Ibod*w);
 term2 = TGB+TGM1+TGM2+TGM3;
 term3 = -(dIm1 + dIm2 + dIm3)*w;
 term4 = -cross(w, (Im1+Im2+Im3)*w);
-wdot = inv(Ibod)*(term1+term2); %trying without term 3 or 4 or mass MOIs
+wdot = inv(Ibod)*(term1+term2+term4); %trying without term 3 or 4 or mass MOIs
 
 wkp1 = w +ST*wdot;
 
-dvec = [w;
+dvec = [w; 
     rm1;
     rm2;
     rm3;

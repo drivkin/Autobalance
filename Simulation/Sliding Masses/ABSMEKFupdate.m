@@ -32,9 +32,9 @@ global T M m I comB mpInit;
 %symbolic stuff
 global drv dvec wdfunc;
 
-gyroNoise = [.1 .1 .1];
-vMesNoise = 10^(-6)*[10 1 1 1 10 1 1 1 10];
-gMesNoise = [.1 .1 .1];
+gyroNoise = 0*10^-3*[.1 .1 .1];
+vMesNoise = 0*1*10^(-6)*[10 1 1 1 10 1 1 1 10];
+gMesNoise = 0*10^-4*[.1 .1 .1];
 
 
 if(isempty(initFlag))
@@ -44,18 +44,18 @@ if(isempty(initFlag))
     %testing the estimator and controller. Once it works like this, we'll move
     %on and make it harder.
     xhat = [y(1:3);
-        mpInit;
+        mpInit;% + 10^-2*ones(9,1);
         0;0;0;0;0;0;0;0;0; %initial velocity of masses is zero
         y(13:15);
-        I(1,1);
-        I(2,2);
-        I(3,3);
-        comB];
+        I(1,1);%+.1;
+        I(2,2);%-.1;
+        I(3,3);%+.5;
+        comB ];%+ 10^0*[1;1;2]];
     
     
     %initial guess covariance matrix
     pmGuessVar = 10^-4*[1 1 1 1 1 1 1 1 1];
-    IguessVar = [2 2 2];
+    IguessVar = [0 0 0];
     comGuessNoise = 10^-2*[1 1 1];
     vGuessNoise = [0 0 0 0 0 0 0 0 0]; %we know the masses aren't sliding to start
     P = diag([gyroNoise pmGuessVar vGuessNoise gMesNoise IguessVar comGuessNoise]);
@@ -89,7 +89,7 @@ if(reset)
 end
 
 %process noise covariance matrix
-wPN = 10^-5*[1 1 1]; %pretty low because the model is good, but not too low because these dynamics do not account for velocity and acceleration of linear masses
+wPN = 10^0*[1 1 1]; %pretty low because the model is good, but not too low because these dynamics do not account for velocity and acceleration of linear masses
 pmPN = [0 0 0 0 0 0 0 0 0]; %none because it's just the integral of velocity
 vmPN = 100*[1 1 1 1 1 1 1 1 1];%high because it's measured
 gbodyPN = 100*[1 1 1]; %high because it's measured

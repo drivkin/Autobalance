@@ -1,14 +1,14 @@
 %generate data with sample time T using ode45 solver
 clear all
 t0 = 0;
-tf = 10;
+tf = 250;
 T = .01;
 
 N = ceil((tf-t0)/T); %number of points
 r = zeros(7,N);
 
-q0 = angle2quat(.01,.02,.03); %initial orientation
-w0 = [0;0;0]; %initial velocity
+q0 = angle2quat(0,0,.03); %initial orientation
+w0 = [0;0;0.25]; %initial velocity
 
 r(:,1) = [q0';w0];
 
@@ -34,7 +34,7 @@ plotVector(t,w,'omega');
 
 %% 
 %compute gravity vector
-gInert = [0 0 -9.8]';
+gInert = [0 0 -9.780327]';
 for i =1:N
     gBody(:,i) = quat2dcm(q(:,i)')*gInert;
 end
@@ -45,4 +45,6 @@ end
 
 save('simData','t','gBody','w');
 
+%%
+EKFdiscrete
 

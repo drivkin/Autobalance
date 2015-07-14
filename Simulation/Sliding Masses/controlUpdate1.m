@@ -24,8 +24,14 @@ function [ rc ] = controlUpdate1(r)
 %the x and y weights. The center of gravity already has to be below the
 %center of rotation when control starts.
 
-speed = 2;
+global T;
+persistent integral;
+if(isempty(integral))
+    integral = [0;0;0];
+end   
 
+speed = 5;
+ki = 0;
 kd = 0;
 
 wx = r(5);
@@ -34,10 +40,11 @@ wy = r(6);
 
 q = r(1:4);
 [yaw pitch roll] = quat2angle(q');
+integral = integral + T*[yaw;pitch;roll];
 
 
-xspeed = -speed*pitch - kd*wy;
-yspeed = speed*roll + kd*wx;
+xspeed = -sign(pitch)*((speed*pitch)^2) - kd*wy - ki*integral(2);
+yspeed = sign(roll)*((speed*roll)^2) + kd*wx+ki*integral(3);
 
 rc = r;
 
