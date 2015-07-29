@@ -8,7 +8,7 @@ starting = 1
 %BetterEKFSymbolic;
 
 t0 = 0;
-tf = 30;
+tf = 10;
 
 %global constants, these can be used by simulator, estimator, and
 %controller
@@ -38,7 +38,7 @@ N = ceil((tf-t0)/T); %number of points
 
 
 
-w0 = [.1;0;0]; %initial body angular veloctiy wrt inertial frame
+w0 = [0;0;0]; %initial body angular veloctiy wrt inertial frame
 
 %initial mass positions
 rm10 = [1;.05;-.05];
@@ -168,7 +168,7 @@ for i=2:N
        r(:,i) = rc;
     
        %if the oscillations become too intense, reset
-       if(norm(rc(5:7))>.3)
+       if(norm(rc(5:7))>100)
            %qrst = angle2quat(0,0,.1);
            qrst = computeEquilibriumPosition(computeTotalCoM(M,m,comB,rc(8:16)));
            wrst = [.1;0;0];
@@ -210,6 +210,15 @@ end
 
 figure
 plotVector(t,com,'CM');
+
+
+%plot gravity vector
+ginert = [0 0 -9.8]';
+for i = 1:N
+    gBody(:,i) = quat2dcm(q(:,i)')*ginert;
+end
+figure
+plotVector(t,gBody,'gBody');
 % CMest = comHat;
 % plotVector(t,CMest,'CMest');
 % legend('CM_1','CM_2','CM_3','CMEST_1','CMEST_2','CMEST_3');

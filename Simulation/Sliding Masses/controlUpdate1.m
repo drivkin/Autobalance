@@ -29,27 +29,37 @@ persistent integral;
 if(isempty(integral))
     integral = [0;0;0];
 end   
+%Control based on euler angles
+% speed = 5;
+% ki = 0;
+% kd = 0;
+% 
+% wx = r(5);
+% wy = r(6);
+% 
+% 
+% q = r(1:4);
+% [yaw pitch roll] = quat2angle(q');
+% integral = integral + T*[yaw;pitch;roll];
+% 
+% 
+% xspeed = -sign(pitch)*((speed*pitch)^2) - kd*wy - ki*integral(2);
+% yspeed = sign(roll)*((speed*roll)^2) + kd*wx+ki*integral(3);
 
-speed = 5;
-ki = 0;
-kd = 0;
-
-wx = r(5);
-wy = r(6);
-
+%control based on gravity vector
 
 q = r(1:4);
-[yaw pitch roll] = quat2angle(q');
-integral = integral + T*[yaw;pitch;roll];
+ginert = [0 0 -9.8]';
+gBody = quat2dcm(q')*ginert;
 
-
-xspeed = -sign(pitch)*((speed*pitch)^2) - kd*wy - ki*integral(2);
-yspeed = sign(roll)*((speed*roll)^2) + kd*wx+ki*integral(3);
+kp = 5;
+xspeed = -sign(gBody(1))*kp*(gBody(1))^2;
+yspeed = -sign(gBody(2))*kp*(gBody(2))^2;
 
 rc = r;
 
 rc(17) = xspeed;
-rc(18) = yspeed;
+%rc(18) = yspeed;
 
 end
 
