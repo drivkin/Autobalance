@@ -12,10 +12,12 @@ fopen(s)
 %     arr = [4 i i i]';
 %     fwrite(s,arr,'int32');
 % end
-setPeriods = 1;
-sleep = 2;
-wake = 3;
-tellPeriods = 4;
+setM1P = 1;
+setM2P = 2;
+setM3P = 3;
+sleep = 4;
+wake = 5;
+tellPeriods = 6;
 
 
 
@@ -59,7 +61,7 @@ while(1)
         end
         mspeeds(mcurr) = cs;
         arr(mcurr) = speedToPeriod(cs);
-        arr(1) = setPeriods;
+        arr(1) = mcurr-1;
         fwrite(s,arr,'int32');
     end
     
@@ -72,7 +74,7 @@ while(1)
         end
         mspeeds(mcurr) = cs;
         arr(mcurr) = speedToPeriod(cs);
-        arr(1) = setPeriods;
+        arr(1) = mcurr-1;
         fwrite(s,arr,'int32');
     end
     
