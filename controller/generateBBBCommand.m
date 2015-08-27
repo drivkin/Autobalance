@@ -11,15 +11,15 @@ function [ com_arr ] = generateBBBCommand(com_string, arg)
 % 'm2speed' 
 % 'm3speed'
 % 'tell_mp' -- echoes back motor periods (in ms)
-% 'tell_adc' -- echoes back two ADC values (MAV filtered)
+% 'tell_sens' -- echoes back two ADC values (MAV filtered) and limit switch state
 coms = {'echo';
-        'sleep';
-        'wake';
         'm1speed';
         'm2speed';
         'm3speed';
+        'sleep';
+        'wake';
         'tell_mp';
-        'tell_adc'};
+        'tell_sens'};
 
 com_arr = [0 speedToPeriod(arg)];
 

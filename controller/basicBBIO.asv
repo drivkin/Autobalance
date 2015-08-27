@@ -31,13 +31,13 @@ while(1)
     if(strcmpi(k,'w'))
         arr = [wake 0 0 0];
         mspeeds = arr;
-        fwrite(s,generateBBBCommand('wake',0),'int32');
+        fwrite(s,generateBBBCommand([,'int32');
     end
     
     if(strcmpi(k,'s'))
         arr = [sleep 0 0 0];
         mspeeds = arr;
-        fwrite(s,generateBBBCommand('sleep',0),'int32');
+        fwrite(s,arr,'int32');
     end
     
     if(strcmpi(k,'1'))
@@ -62,7 +62,7 @@ while(1)
         mspeeds(mcurr) = cs;
         arr(mcurr) = speedToPeriod(cs);
         arr(1) = mcurr-1;
-        fwrite(s,generateBBBCommand(['m' num2str(mcurr-1) 'speed'],cs),'int32');
+        fwrite(s,arr,'int32');
     end
     
     
@@ -75,17 +75,17 @@ while(1)
         mspeeds(mcurr) = cs;
         arr(mcurr) = speedToPeriod(cs);
         arr(1) = mcurr-1;
-        fwrite(s,generateBBBCommand(['m' num2str(mcurr-1) 'speed'],cs),'int32');
+        fwrite(s,arr,'int32');
     end
     
     if(strcmpi(k,'t'))
         arr(1) = tellPeriods;
-        fwrite(s,generateBBBCommand('tell_mp',0),'int32');
+        fwrite(s,arr,'int32');
     end
     
     if(strcmpi(k,'x'))
         fclose(s);
-        break;t
+        break;
     end     
     
     

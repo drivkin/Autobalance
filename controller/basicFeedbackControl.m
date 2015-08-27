@@ -8,8 +8,8 @@ fopen(s)
 %% read uart, print out what it's giving, and then send some command
 
 while(1)
-    fwrite(s,generateBBBCommand('tell_adc',0),'int32');
-    A = fread(s,2,'int32')
+    fwrite(s,generateBBBCommand('tell_sens',0),'int32');
+    A = fread(s,3,'int32')
 end
 
 %%
