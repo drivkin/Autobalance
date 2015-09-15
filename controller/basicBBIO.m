@@ -1,7 +1,8 @@
-s = serial('COM4');
+clear all;
+
+s = serial('COM6');
 set(s,'BaudRate',38400);
 set(s,'DataBits',8);
-set(s,'Parity','even');
 set(s,'StopBits',1);
 fopen(s)
 %%
@@ -11,7 +12,7 @@ fopen(s)
 %     pause(.01);
 %     arr = [4 i i i]';
 %     fwrite(s,arr,'int32');
-% end
+% end1d
 setM1P = 1;
 setM2P = 2;
 setM3P = 3;
@@ -80,12 +81,25 @@ while(1)
     
     if(strcmpi(k,'t'))
         arr(1) = tellPeriods;
-        fwrite(s,generateBBBCommand('tell_mp',0),'int32');
+        fwrite(s,generateBBBCommand('tell_mp',11),'int32');
+        pause(.01);
+        a = fread(s,3,'int32')
+    end
+    
+    if(strcmpi(k,'h'))
+
+        fwrite(s,[1324324 234233],'int32');
+    end
+    
+    if(strcmpi(k,'space'))
+        fwrite(s,generateBBBCommand('tell_sens',0),'int32');
+        pause(.01);
+        a = fread(s,3,'int32')
     end
     
     if(strcmpi(k,'x'))
         fclose(s);
-        break;t
+        break;
     end     
     
     
